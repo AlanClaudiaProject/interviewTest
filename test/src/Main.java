@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +32,7 @@ public class Main {
     private static final int MaxSeatPerRow = 10;
     private static final int MaxRowPerHall = 26;
 
-    private static boolean unitTest = false;
+    private static boolean debug = false;
     private static String role = START;
 
     public static void main(String[] args) {
@@ -50,10 +51,10 @@ public class Main {
             int userInput = 0;
             System.out.println("Please select 1 of the below(1 or 2):");
             System.out.println("1. Start program");
-            System.out.println("2. Start program and unit test");
+            System.out.println("2. Start program with debug");
             userInput = grabInputwithExpectedOutcome1or2();
             if(userInput==2) {
-                unitTest = true;
+                debug = true;
             }
 
 
@@ -97,6 +98,9 @@ public class Main {
     }
 
     private static void cancelCall(String[] userInput) {
+        if(debug){
+            System.out.println("cancelCall("+ Arrays.toString(userInput)+")");
+        }
         if(role.equalsIgnoreCase(BUYER)){
             if (userInput.length != 3) {
                 System.out.println("command have wrong amount of input!");
@@ -111,6 +115,9 @@ public class Main {
     }
 
     private static void cancel(String bookingId, String PhoneNumber) {
+        if(debug){
+            System.out.println("cancel("+bookingId+", "+PhoneNumber+")");
+        }
         boolean exist = false;
         Show targetShow = null;
         Booking[][] selectedShowBooking = null;
@@ -145,6 +152,9 @@ public class Main {
     }
 
     private static void bookCall(String[] userInput) {
+        if(debug){
+            System.out.println("bookCall("+ Arrays.toString(userInput)+")");
+        }
         if(role.equalsIgnoreCase(BUYER)){
             if (userInput.length != 4) {
                 System.out.println("command have wrong amount of input!");
@@ -159,6 +169,9 @@ public class Main {
     }
 
     private static void book(String showId, String phoneNumber, String seatsInput) {
+        if(debug){
+            System.out.println("book("+showId+", "+phoneNumber+", "+seatsInput+")");
+        }
         boolean exist = false;
         Show targetShow = null;
         Booking[][] selectedShowBooking = null;
@@ -198,6 +211,9 @@ public class Main {
     }
 
     private static void avaCall(String[] userInput) {
+        if(debug){
+            System.out.println("avaCall("+ Arrays.toString(userInput)+")");
+        }
         if(role.equalsIgnoreCase(BUYER)){
             if (userInput.length != 2) {
                 System.out.println("command have wrong amount of input!");
@@ -212,6 +228,9 @@ public class Main {
     }
 
     private static void ava(String showId) {
+        if(debug){
+            System.out.println("ava("+showId+")");
+        }
         boolean exist = false;
         Booking[][] selectedShowBooking = null;
         for (Show ea : shows) {
@@ -239,6 +258,9 @@ public class Main {
     }
 
     private static void viewCall(String[] userInput) {
+        if(debug){
+            System.out.println("viewCall("+ Arrays.toString(userInput)+")");
+        }
         if(role.equalsIgnoreCase(ADMIN)) {
             if (userInput.length != 2) {
                 System.out.println("Setup command have wrong amount of input!");
@@ -253,6 +275,9 @@ public class Main {
     }
 
     private static void setupCall(String[] userInput) {
+        if(debug){
+            System.out.println("setupCall("+ Arrays.toString(userInput)+")");
+        }
         if(role.equalsIgnoreCase(ADMIN)) {
             if (userInput.length != 5) {
                 System.out.println("Setup command have wrong amount of input!");
@@ -270,6 +295,9 @@ public class Main {
     }
 
     private static void view(String showId) {
+        if(debug){
+            System.out.println("showId("+showId+")");
+        }
         boolean exist = false;
         Booking[][] selectedShowBooking = null;
         for (Show ea : shows) {
@@ -300,6 +328,9 @@ public class Main {
     }
 
     private static void setup(String showId, int rowMax, int seatMax, int cancelTime) {
+        if(debug){
+            System.out.println("setup("+showId+", "+rowMax+", "+seatMax+", "+cancelTime+")");
+        }
         boolean exist = false;
         for (Show ea : shows) {
             if(ea.getShowId().equalsIgnoreCase(showId)){
@@ -323,6 +354,9 @@ public class Main {
     }
 
     private static boolean isNumber(String s) {
+        if(debug){
+            System.out.println("isNumber("+s+")");
+        }
         try{
             int test = Integer.parseInt(s);
         }
@@ -345,7 +379,7 @@ public class Main {
                 input = reader.readLine();
 
                 // Printing the read line
-                System.out.println(input);
+//                System.out.println(input);
                 output = input.split(COMMANDDELIMITER);
             }catch (Exception ex){
                 ex.printStackTrace();
@@ -392,11 +426,13 @@ public class Main {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         // Reading data using readLine
-        String name = reader.readLine();
+        String input = reader.readLine();
 
         // Printing the read line
-        System.out.println(name);
-        return name;
+        if(debug){
+            System.out.println("input: "+input);
+        }
+        return input;
     }
 
 }
