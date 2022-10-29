@@ -126,10 +126,10 @@ public class Main {
                 seatNum = seatNum - 1;
                 if(row >=0 && seatNum >=0 && row < targetShow.getRows() && seatNum < targetShow.getSeatsPerRow()) {
                     if(selectedShowBooking[row][seatNum].getBookingId().equalsIgnoreCase(bookingId) && selectedShowBooking[row][seatNum].getPhoneNumber().equalsIgnoreCase(PhoneNumber)){
+                        exist = true;
                         if(selectedShowBooking[row][seatNum].getBookingTime().plusMinutes(targetShow.getCancellationTime()).isAfter(LocalDateTime.now())) {
                             ea.getBookings()[row][seatNum] = null;
                             System.out.println("booking cancelled!");
-                            exist = true;
                         }
                         else {
                             System.out.println("booking cancellation time exceeded!");
