@@ -71,27 +71,27 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/test/src/Main.java</url>
-          <line>127</line>
+          <line>128</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/test/src/Main.java</url>
-          <line>126</line>
+          <line>127</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/test/src/Main.java</url>
-          <line>128</line>
+          <line>129</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/test/src/Main.java</url>
-          <line>140</line>
+          <line>141</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/test/src/Main.java</url>
-          <line>125</line>
+          <line>126</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
@@ -103,6 +103,9 @@
         <watch expression="selectedShowBooking[row][seatNum].getBookingId() == bookingId" />
         <watch expression="selectedShowBooking[row][seatNum].getPhoneNumber() == PhoneNumber" />
         <watch expression="selectedShowBooking[row][seatNum].getBookingId()" />
+        <watch expression="selectedShowBooking[row][seatNum].getBookingId().equalsIgnoreCase(bookingId) &amp;&amp; selectedShowBooking[row][seatNum].getPhoneNumber().equalsIgnoreCase(PhoneNumber)" />
+        <watch expression="selectedShowBooking[row][seatNum].getBookingTime().plusMinutes(targetShow.getCancellationTime())" />
+        <watch expression="selectedShowBooking[row][seatNum].getBookingTime().plusMinutes(targetShow.getCancellationTime()).isAfter(LocalDateTime.now())" />
       </configuration>
     </watches-manager>
   </component>

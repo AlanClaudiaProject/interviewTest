@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -185,6 +186,11 @@ public class Main {
                     } else {
                         selectedShowBooking[row][seatNum] = new Booking(phoneNumber, showId, seat, BOOKINGDELIMITER);
                         System.out.println("seat(" + seat + ") booked! booking number: " + selectedShowBooking[row][seatNum].getBookingId());
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(10);
+                        }catch(Exception ex){
+                            ex.printStackTrace();
+                        }
                     }
                 }
             }

@@ -9,7 +9,7 @@ public class Booking {
     public Booking(String phoneNumber, String showId, String seat, String delimiter) {
         this.phoneNumber = phoneNumber;
         this.bookingTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSS");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSSSS");
         this.bookingId =  showId+delimiter+seat+delimiter+bookingTime.format(formatter);
     }
 
