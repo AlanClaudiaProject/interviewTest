@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 public class Main {
 
@@ -33,6 +37,7 @@ public class Main {
     private static final int MaxRowPerHall = 26;
 
     private static boolean debug = false;
+    private static boolean unitTest = false;
     private static String role = START;
 
     public static void main(String[] args) {
@@ -51,10 +56,12 @@ public class Main {
             int userInput = 0;
             System.out.println("Please select 1 of the below(1 or 2):");
             System.out.println("1. Start program");
-            System.out.println("2. Start program with debug");
+            System.out.println("2. Start program and unit Test");
             userInput = grabInputwithExpectedOutcome1or2();
             if(userInput==2) {
-                debug = true;
+                unitTest = true;
+                startUnitTest();
+                return;
             }
 
 
@@ -93,28 +100,160 @@ public class Main {
         System.out.println("Please Enter Command!");
     }
 
+    @Test
+    private static void startUnitTest() {
+        System.out.println("Starting unit test");
+        System.out.println("Admin role");
+        role = ADMIN;
+
+        String[] input = new String[]{"setup","mov1","26","10","10"};
+        System.out.print("setup mov1 26 10 10 result in true: ");
+        assertTrue(setupCall(input));
+        System.out.println("success");
+
+        input = new String[]{"setup","mov1","26","10","10"};
+        System.out.print("setup mov1 26 10 10 result in false: ");
+        assertFalse(setupCall(input));
+        System.out.println("success");
+
+        input = new String[]{"setup","mov1","27","10","10"};
+        System.out.print("setup mov2 27 10 10 result in false: ");
+        assertFalse(setupCall(input));
+        System.out.println("success");
+
+        input = new String[]{"setup","mov1","0","10","10"};
+        System.out.print("setup mov2 0 10 10 result in false: ");
+        assertFalse(setupCall(input));
+        System.out.println("success");
+
+        input = new String[]{"setup","mov1","26","11","10"};
+        System.out.print("setup mov2 26 11 10 result in false: ");
+        assertFalse(setupCall(input));
+        System.out.println("success");
+
+        input = new String[]{"setup","mov1","26","0","10"};
+        System.out.print("setup mov2 26 0 10 result in false: ");
+        assertFalse(setupCall(input));
+        System.out.println("success");
+
+        input = new String[]{"setup","mov1"};
+        System.out.print("setup mov1 result in false: ");
+        assertFalse(setupCall(input));
+        System.out.println("success");
+
+        input = new String[]{"view","mov1"};
+        System.out.print("View mov1 result in true: ");
+        assertTrue(viewCall(input));
+        System.out.println("success");
+
+        input = new String[]{"view","mov2"};
+        System.out.print("View mov2 result in False: ");
+        assertFalse(viewCall(input));
+        System.out.println("success");
+
+        input = new String[]{"view"};
+        System.out.print("View result in False: ");
+        assertFalse(viewCall(input));
+        System.out.println("success");
+
+        input = new String[]{"ava","mov1"};
+        System.out.print("Ava mov1 result in False: ");
+        assertFalse(avaCall(input));
+        System.out.println("success");
+
+        input = new String[]{"book","mov1","87741464","A1,A3"};
+        System.out.print("book mov1 87741464 a1,A3 result in False: ");
+        assertFalse(bookCall(input));
+        System.out.println("success");
+
+        input = new String[]{"cancel","mov1-a1-230298301283","87741464"};
+        System.out.print("book mov1 87741464 a1,A3 result in False: ");
+        assertFalse(bookCall(input));
+        System.out.println("success");
+
+
+        System.out.println();
+        System.out.println("Buyer role");
+        role = BUYER;
+
+        input = new String[]{"ava","mov1"};
+        System.out.print("Ava mov1 result in True: ");
+        assertTrue(avaCall(input));
+        System.out.println("success");
+
+        input = new String[]{"ava","mov2"};
+        System.out.print("Ava mov2 result in False: ");
+        assertFalse(avaCall(input));
+        System.out.println("success");
+
+        input = new String[]{"ava"};
+        System.out.print("Ava result in False: ");
+        assertFalse(avaCall(input));
+        System.out.println("success");
+
+        input = new String[]{"book","mov1","87741464","A1,A3"};
+        System.out.print("book mov1 87741464 a1,A3 result in True: ");
+        assertTrue(bookCall(input));
+        System.out.println("success");
+
+        input = new String[]{"book","mov1","87741464","A1,A3"};
+        System.out.print("book mov1 87741464 a1,A3 result in False: ");
+        assertFalse(bookCall(input));
+        System.out.println("success");
+
+        input = new String[]{"book","mov1","87741464"};
+        System.out.print("book mov1 87741464 result in False: ");
+        assertFalse(bookCall(input));
+        System.out.println("success");
+
+        input = new String[]{"cancel",shows.get(0).getBookings()[0][0].getBookingId(),"87741464"};
+        System.out.print("cancel <ticketID> 87741464 result in False: ");
+        assertTrue(cancelCall(input));
+        System.out.println("success");
+
+        input = new String[]{"cancel","mov1-a1-230298301283","87741464"};
+        System.out.print("cancel mov1-a1-230298301283 87741464 result in False: ");
+        assertFalse(cancelCall(input));
+        System.out.println("success");
+
+        input = new String[]{"setup","mov2","26","10","10"};
+        System.out.print("setup mov2 26 10 10 result in false: ");
+        assertFalse(setupCall(input));
+        System.out.println("success");
+
+        input = new String[]{"view","mov1"};
+        System.out.print("View mov1 result in False: ");
+        assertFalse(viewCall(input));
+        System.out.println("success");
+
+        role = START;
+//        System.exit(1);
+        shows = new ArrayList<Show>();
+    }
+
     private static void exitCall(String[] userInput) {
         role = START;
     }
 
-    private static void cancelCall(String[] userInput) {
+    private static boolean cancelCall(String[] userInput) {
         if(debug){
             System.out.println("cancelCall("+ Arrays.toString(userInput)+")");
         }
         if(role.equalsIgnoreCase(BUYER)){
             if (userInput.length != 3) {
-                System.out.println("command have wrong amount of input!");
+                if(!unitTest) System.out.println("command have wrong amount of input!");
             }
             else {
-                cancel(userInput[1],userInput[2]);
+                return cancel(userInput[1],userInput[2]);
             }
         }
         else {
-            System.out.println("incorrect role");
+            if(!unitTest) System.out.println("incorrect role");
         }
+        return false;
     }
 
-    private static void cancel(String bookingId, String PhoneNumber) {
+    private static boolean cancel(String bookingId, String PhoneNumber) {
         if(debug){
             System.out.println("cancel("+bookingId+", "+PhoneNumber+")");
         }
@@ -136,10 +275,10 @@ public class Main {
                         exist = true;
                         if(selectedShowBooking[row][seatNum].getBookingTime().plusMinutes(targetShow.getCancellationTime()).isAfter(LocalDateTime.now())) {
                             ea.getBookings()[row][seatNum] = null;
-                            System.out.println("booking cancelled!");
+                            if(!unitTest) System.out.println("booking cancelled!");
                         }
                         else {
-                            System.out.println("booking cancellation time exceeded!");
+                            if(!unitTest) System.out.println("booking cancellation time exceeded!");
                         }
                     }
                 }
@@ -147,32 +286,36 @@ public class Main {
         }
 
         if(!exist) {
-            System.out.println("booking ID not found!");
+            if(!unitTest) System.out.println("booking ID not found!");
+            return false;
         }
+        return true;
     }
 
-    private static void bookCall(String[] userInput) {
+    private static boolean bookCall(String[] userInput) {
         if(debug){
             System.out.println("bookCall("+ Arrays.toString(userInput)+")");
         }
         if(role.equalsIgnoreCase(BUYER)){
             if (userInput.length != 4) {
-                System.out.println("command have wrong amount of input!");
+                if(!unitTest)System.out.println("command have wrong amount of input!");
             }
             else {
-                book(userInput[1],userInput[2],userInput[3]);
+                return book(userInput[1],userInput[2],userInput[3]);
             }
         }
         else {
-            System.out.println("incorrect role");
+            if(!unitTest)System.out.println("incorrect role");
         }
+        return false;
     }
 
-    private static void book(String showId, String phoneNumber, String seatsInput) {
+    private static boolean book(String showId, String phoneNumber, String seatsInput) {
         if(debug){
             System.out.println("book("+showId+", "+phoneNumber+", "+seatsInput+")");
         }
         boolean exist = false;
+        boolean seatFound = false;
         Show targetShow = null;
         Booking[][] selectedShowBooking = null;
         for (Show ea : shows) {
@@ -183,7 +326,8 @@ public class Main {
             }
         }
         if(!exist) {
-            System.out.println("ShowId not found!");
+            if(!unitTest) System.out.println("ShowId not found!");
+            return false;
         }
         else {
             String[] seats = seatsInput.toUpperCase(Locale.ROOT).split(SEATDELIMITER);
@@ -195,10 +339,11 @@ public class Main {
                 seatNum = seatNum - 1;
                 if(row >=0 && seatNum >=0 && row < targetShow.getRows() && seatNum < targetShow.getSeatsPerRow()) {
                     if (selectedShowBooking[row][seatNum] != null) {
-                        System.out.println("seat(" + seat + ") taken!");
+                        if(!unitTest) System.out.println("seat(" + seat + ") taken!");
                     } else {
                         selectedShowBooking[row][seatNum] = new Booking(phoneNumber, showId, seat, BOOKINGDELIMITER);
-                        System.out.println("seat(" + seat + ") booked! booking number: " + selectedShowBooking[row][seatNum].getBookingId());
+                        if(!unitTest) System.out.println("seat(" + seat + ") booked! booking number: " + selectedShowBooking[row][seatNum].getBookingId());
+                        seatFound = true;
                         try {
                             TimeUnit.MILLISECONDS.sleep(10);
                         }catch(Exception ex){
@@ -208,30 +353,33 @@ public class Main {
                 }
             }
         }
+        return seatFound;
     }
 
-    private static void avaCall(String[] userInput) {
+    private static boolean avaCall(String[] userInput) {
         if(debug){
             System.out.println("avaCall("+ Arrays.toString(userInput)+")");
         }
         if(role.equalsIgnoreCase(BUYER)){
             if (userInput.length != 2) {
-                System.out.println("command have wrong amount of input!");
+                if(!unitTest)System.out.println("command have wrong amount of input!");
             }
             else {
-                ava(userInput[1]);
+                return ava(userInput[1]);
             }
         }
         else {
-            System.out.println("incorrect role");
+            if(!unitTest)System.out.println("incorrect role");
         }
+        return false;
     }
 
-    private static void ava(String showId) {
+    private static boolean ava(String showId) {
         if(debug){
             System.out.println("ava("+showId+")");
         }
         boolean exist = false;
+        boolean seatFound = false;
         Booking[][] selectedShowBooking = null;
         for (Show ea : shows) {
             if(ea.getShowId().equalsIgnoreCase(showId)){
@@ -240,7 +388,8 @@ public class Main {
             }
         }
         if(!exist) {
-            System.out.println("ShowId not found!");
+            if(!unitTest)System.out.println("ShowId not found!");
+            return false;
         }
         else {
             for(int a=0;a<selectedShowBooking.length;a++){
@@ -249,52 +398,35 @@ public class Main {
                     if(selectedShowBooking[a][b] != null) {
                     }
                     else {
-                        System.out.print("The seat "+seatAphla+(b+1)+" ");
-                        System.out.println("is empty");
+                        if(!unitTest)System.out.println("The seat "+seatAphla+(b+1)+" is empty");
+                        seatFound = true;
                     }
                 }
             }
         }
+        if(!seatFound)System.out.println("No empty seat for show!");
+        return seatFound;
     }
 
-    private static void viewCall(String[] userInput) {
+    private static boolean viewCall(String[] userInput) {
         if(debug){
             System.out.println("viewCall("+ Arrays.toString(userInput)+")");
         }
         if(role.equalsIgnoreCase(ADMIN)) {
             if (userInput.length != 2) {
-                System.out.println("Setup command have wrong amount of input!");
+                if(!unitTest)System.out.println("Setup command have wrong amount of input!");
             }
             else {
-                view(userInput[1]);
+                return view(userInput[1]);
             }
         }
         else {
-            System.out.println("incorrect role");
+            if(!unitTest)System.out.println("incorrect role");
         }
+        return false;
     }
 
-    private static void setupCall(String[] userInput) {
-        if(debug){
-            System.out.println("setupCall("+ Arrays.toString(userInput)+")");
-        }
-        if(role.equalsIgnoreCase(ADMIN)) {
-            if (userInput.length != 5) {
-                System.out.println("Setup command have wrong amount of input!");
-            }
-            if(isNumber(userInput[2]) && isNumber(userInput[3]) && isNumber(userInput[4])) {
-                int rowNum = Integer.parseInt(userInput[2]);
-                int seatNum = Integer.parseInt(userInput[3]);
-                int cancelTime = Integer.parseInt(userInput[4]);
-                setup( userInput[1], rowNum, seatNum, cancelTime);
-            }
-        }
-        else {
-            System.out.println("incorrect role");
-        }
-    }
-
-    private static void view(String showId) {
+    private static boolean view(String showId) {
         if(debug){
             System.out.println("showId("+showId+")");
         }
@@ -307,27 +439,51 @@ public class Main {
             }
         }
         if(!exist) {
-            System.out.println("ShowId not found!");
+            if(!unitTest)System.out.println("ShowId not found!");
+            return false;
         }
         else {
             for(int a=0;a<selectedShowBooking.length;a++){
                 for(int b=0;b<selectedShowBooking[a].length;b++){
                     char seatAphla = (char) (a+65);
-                    System.out.print("information for seat "+seatAphla+(b+1)+" ");
+                    if(!unitTest)System.out.print("information for seat "+seatAphla+(b+1)+" ");
                     if(selectedShowBooking[a][b] != null) {
                         String ticketId = selectedShowBooking[a][b].getBookingId();
                         String phoneNumber = selectedShowBooking[a][b].getPhoneNumber();
-                        System.out.println("is bought. TicketId:"+ticketId+" Buyer phone number:"+phoneNumber);
+                        if(!unitTest)System.out.println("is bought. TicketId:"+ticketId+" Buyer phone number:"+phoneNumber);
                     }
                     else {
-                        System.out.println("is empty");
+                        if(!unitTest)System.out.println("is empty");
                     }
                 }
             }
         }
+        return true;
     }
 
-    private static void setup(String showId, int rowMax, int seatMax, int cancelTime) {
+    private static boolean setupCall(String[] userInput) {
+        if(debug){
+            System.out.println("setupCall("+ Arrays.toString(userInput)+")");
+        }
+        if(role.equalsIgnoreCase(ADMIN)) {
+            if (userInput.length != 5) {
+                if(!unitTest)System.out.println("Setup command have wrong amount of input!");
+                return false;
+            }
+            if(isNumber(userInput[2]) && isNumber(userInput[3]) && isNumber(userInput[4])) {
+                int rowNum = Integer.parseInt(userInput[2]);
+                int seatNum = Integer.parseInt(userInput[3]);
+                int cancelTime = Integer.parseInt(userInput[4]);
+                return setup( userInput[1], rowNum, seatNum, cancelTime);
+            }
+        }
+        else {
+            if(!unitTest)System.out.println("incorrect role");
+        }
+        return false;
+    }
+
+    private static boolean setup(String showId, int rowMax, int seatMax, int cancelTime) {
         if(debug){
             System.out.println("setup("+showId+", "+rowMax+", "+seatMax+", "+cancelTime+")");
         }
@@ -335,22 +491,24 @@ public class Main {
         for (Show ea : shows) {
             if(ea.getShowId().equalsIgnoreCase(showId)){
                 exist = true;
-                System.out.println("Show Id exists");
+                if(!unitTest)System.out.println("Show Id exists");
             }
         }
         if(!exist){
-            if(rowMax > MaxRowPerHall){
-                System.out.println("Exceeded max Number of row("+MaxRowPerHall+") allowed!");
+            if(rowMax > MaxRowPerHall && rowMax > 0){
+                if(!unitTest)System.out.println("Exceeded max Number of row("+MaxRowPerHall+") allowed!");
             }
-            else if (seatMax > MaxSeatPerRow){
-                System.out.println("Exceeded max Number of seat per row("+MaxSeatPerRow+") allowed!");
+            else if (seatMax > MaxSeatPerRow && seatMax > 0){
+                if(!unitTest)System.out.println("Exceeded max Number of seat per row("+MaxSeatPerRow+") allowed!");
             }
             else {
                 Show current = new Show(showId, rowMax, seatMax, cancelTime);
                 shows.add(current);
-                System.out.println("Show added to system!");
+                if(!unitTest)System.out.println("Show added to system!");
+                return true;
             }
         }
+        return false;
     }
 
     private static boolean isNumber(String s) {
